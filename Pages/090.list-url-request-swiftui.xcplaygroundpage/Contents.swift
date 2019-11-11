@@ -28,10 +28,7 @@ class PeopleModel : ObservableObject {
   
   init () {
     self.list = [Person]()
-    self.cancellable =  publisher.receive(on: DispatchQueue.main).sink(receiveValue: { (persons) in
-      print(persons)
-      self.list = persons
-    })
+    self.cancellable =  publisher.receive(on: DispatchQueue.main).assign(to: \.list, on: self)
   }
 }
 
