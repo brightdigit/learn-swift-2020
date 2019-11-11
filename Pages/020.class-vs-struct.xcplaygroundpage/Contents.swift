@@ -31,10 +31,15 @@ let personObject = PersonObject(name: "object")
 let personValue = PersonValue(name: "value")
 hello(person: personObject)
 hello(person: personValue)
+print()
+var newPersonValue = personValue
+var newPersonObject = personObject
+newPersonValue.name = "new Value"
+newPersonObject.name = "new Object"
 
-personValue.name = "new Value"
-personObject.name = "new Object"
-
+hello(person: newPersonObject)
+hello(person: newPersonValue)
+print()
 hello(person: personObject)
 hello(person: personValue)
 
