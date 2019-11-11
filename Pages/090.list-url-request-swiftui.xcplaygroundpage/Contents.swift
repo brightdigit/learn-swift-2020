@@ -16,37 +16,40 @@ struct Person : Identifiable, Codable {
 
 
 let decoder = JSONDecoder()
+let publisher =  URLSession.shared.dataTaskPublisher(for: URL(string: "https://jsonplaceholder.typicode.com/users")!)
+       .map(\.data)
+       .decode(type: [Person].self, decoder: JSONDecoder())
+  .assertNoFailure().eraseToAnyPublisher()
 
 class PeopleModel : ObservableObject {
-  @Published var list  = [Person(id: 1, name: "test")]
+  @Published var list : [Person]
 
-  let publisher =
-  {
-    URLSession.shared.dataTaskPublisher(for: URL(string: "https://jsonplaceholder.typicode.com/users")!)
-      .map(\.data)
-      .decode(type: [Person].self, decoder: JSONDecoder())
-      .catch{ _ in Empty<[Person], Never>() }
-      
-    
-  }()
   var cancellable : AnyCancellable!
   
   init () {
-    self.cancellable = publisher.receive(on: DispatchQueue.main).assign(to: \.list, on: self)
+    self.list = [Person]()
+    self.cancellable =  publisher.receive(on: DispatchQueue.main).sink(receiveValue: { (persons) in
+      print(persons)
+      self.list = persons
+    })
   }
 }
 
 struct ContentView : View {
-  @ObservedObject var people = PeopleModel()
+  @ObservedObject var people : PeopleModel
+  var cancellable : AnyCancellable!
   
   var body : some View {
-    
-    List(people.list) { (person) in
+    ForEach(people.list) { (person) -> _ in
+      
       Text(person.name)
     }
   }
 }
 
-PlaygroundPage.current.setLiveView(ContentView())
+var model = PeopleModel()
+
 PlaygroundPage.current.needsIndefiniteExecution = true
+PlaygroundPage.current.setLiveView(ContentView(people: model))
+
 //: [Next](@next)
