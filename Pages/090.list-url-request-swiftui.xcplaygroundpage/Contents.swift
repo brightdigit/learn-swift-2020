@@ -40,8 +40,7 @@ struct ContentView : View {
   var cancellable : AnyCancellable!
   
   var body : some View {
-    ForEach(people.list) { (person) -> _ in
-      
+    ForEach(people.list) { (person) in
       Text(person.name)
     }
   }
