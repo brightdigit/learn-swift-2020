@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios'>
+    <pages>
+        <page name='001.Hello'/>
+        <page name='010.function'/>
+        <page name='020.class-vs-struct'/>
+        <page name='030.optionals'/>
+        <page name='040.enums'/>
+        <page name='050.extensions'/>
+        <page name='060.protocols'/>
+        <page name='070.tableview-uikit'/>
+        <page name='080.list-swiftui'/>
+        <page name='090.list-url-request-swiftui'/>
+    </pages>
+</playground>
