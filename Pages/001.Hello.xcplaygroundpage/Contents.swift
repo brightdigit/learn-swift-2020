@@ -2,7 +2,7 @@
 
 import Foundation
 
-var str = "Hello, playground"
+let str = "Hello, playground"
 
 print(str)
 //: [Next](@next)

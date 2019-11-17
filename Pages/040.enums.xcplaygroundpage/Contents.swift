@@ -1,7 +1,11 @@
 //: [Previous](@previous)
 
 import Foundation
+import CoreGraphics
 
-var str = "Hello, playground"
+enum Transform {
+  case scale(Double)
+  case move(CGPoint)
+}
 
 //: [Next](@next)

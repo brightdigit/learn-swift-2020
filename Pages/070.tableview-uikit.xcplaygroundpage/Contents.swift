@@ -4,7 +4,6 @@ import Foundation
 import PlaygroundSupport
 import UIKit
 
-
 let names = ["Byron Fisher","Garrett Doyle","Angel Hammond","Brianna Bradley","Evelyn Ellis"]
 
 class TableViewController : UITableViewController {
