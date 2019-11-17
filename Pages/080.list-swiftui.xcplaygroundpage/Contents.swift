@@ -17,16 +17,29 @@ struct Person : Identifiable {
 
 let people = names.map{
   Person(id: nil, name: $0)
+}.sorted { (lhs, rhs) -> Bool in
+  lhs.name.compare(rhs.name) == .orderedAscending
 }
 
+class ApplicationData : ObservableObject {
+  @Published var people : [Person]
+  
+  init (people : [Person]) {
+    self.people = people
+  }
+}
+
+
 struct ContentView : View {
+  @EnvironmentObject var data : ApplicationData
   var body : some View {
-    List(people) { (person) in
+    List(self.data.people) { (person) in
       Text(person.name)
     }
   }
 }
 
-PlaygroundPage.current.setLiveView(ContentView())
+let liveView = ContentView().environmentObject(ApplicationData(people: people))
+PlaygroundPage.current.setLiveView(liveView)
 
 //: [Next](@next)

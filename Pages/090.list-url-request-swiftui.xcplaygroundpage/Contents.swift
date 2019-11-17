@@ -14,38 +14,33 @@ struct Person : Identifiable, Codable {
   }
 }
 
-
-let decoder = JSONDecoder()
-let publisher =  URLSession.shared.dataTaskPublisher(for: URL(string: "https://jsonplaceholder.typicode.com/users")!)
-       .map(\.data)
-       .decode(type: [Person].self, decoder: JSONDecoder())
-  .assertNoFailure().eraseToAnyPublisher()
-
-class PeopleModel : ObservableObject {
-  @Published var list : [Person]
-
-  var cancellable : AnyCancellable!
+class ApplicationData : ObservableObject {
+  @Published var people : [Person]
   
-  init () {
-    self.list = [Person]()
-    self.cancellable =  publisher.receive(on: DispatchQueue.main).assign(to: \.list, on: self)
+  init (people : [Person]) {
+    self.people = people
   }
 }
 
 struct ContentView : View {
-  @ObservedObject var people : PeopleModel
-  var cancellable : AnyCancellable!
+  @EnvironmentObject var data : ApplicationData
   
   var body : some View {
-    ForEach(people.list) { (person) in
+    ForEach(data.people) { (person) in
       Text(person.name)
     }
   }
 }
 
-var model = PeopleModel()
-
-PlaygroundPage.current.needsIndefiniteExecution = true
-PlaygroundPage.current.setLiveView(ContentView(people: model))
+let url = URL(string: "https://jsonplaceholder.typicode.com/users")!
+let decoder = JSONDecoder()
+let publisher =  URLSession.shared.dataTaskPublisher(for: url)
+       .map(\.data)
+       .decode(type: [Person].self, decoder: JSONDecoder())
+       .assertNoFailure().eraseToAnyPublisher()
+let data = ApplicationData(people: [Person]())
+let cancellable = publisher.receive(on: DispatchQueue.main).assign(to: \.people, on: data)
+let liveView = ContentView().environmentObject(data)
+PlaygroundPage.current.setLiveView(liveView)
 
 //: [Next](@next)
