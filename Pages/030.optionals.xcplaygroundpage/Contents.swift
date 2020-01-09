@@ -41,9 +41,14 @@ print(employees)
 
 var foundCeo : Employee?
 
-foundCeo = employees.last(where: {
-  $0.manager == nil
-})
+for employee in employees {
+  if foundCeo != nil {
+    break
+  }
+  if employee.manager == nil {
+    foundCeo = employee
+  }
+}
 print()
 if let ceo = foundCeo {
   for employee in employees {
@@ -53,5 +58,15 @@ if let ceo = foundCeo {
   }
 }
 
+//guard let ceo = foundCeo else {
+//  return
+//}
+//
+//for employee in employees {
+//  if employee !== ceo {
+//    ceo.hire(employee: employee)
+//  }
+//}
+  
 print(employees)
 //: [Next](@next)
